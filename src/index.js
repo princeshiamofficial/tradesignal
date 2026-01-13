@@ -3,6 +3,23 @@ const api = require('./services/api');
 const indicators = require('./services/indicators');
 const telegram = require('./services/telegram');
 const moment = require('moment-timezone');
+const express = require('express');
+
+// --- WEB SERVER (For Render/Heroku) ---
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+    res.send('🚀 Trade Signal Bot is Running!');
+});
+
+app.get('/health', (req, res) => {
+    res.status(200).send('OK');
+});
+
+app.listen(PORT, () => {
+    console.log(`🌐 Web Server running on port ${PORT}`);
+});
 
 const signalState = {};
 const lastAlertTime = {};

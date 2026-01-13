@@ -20,6 +20,7 @@
     "axios": "^1.6.0",
     "ccxt": "^4.0.0",
     "dotenv": "^16.3.0",
+    "express": "^5.2.1",
     "moment-timezone": "^0.6.0",
     "node-telegram-bot-api": "^0.64.0",
     "technicalindicators": "^3.1.0"
