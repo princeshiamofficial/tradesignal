@@ -1,0 +1,30 @@
+{
+  "name": "trade-signal-bot",
+  "version": "1.0.0",
+  "description": "A Node.js bot that tracks crypto prices and sends trade signals via Telegram.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [
+    "trading",
+    "bot",
+    "crypto",
+    "signal",
+    "telegram"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "ccxt": "^4.0.0",
+    "dotenv": "^16.3.0",
+    "moment-timezone": "^0.6.0",
+    "node-telegram-bot-api": "^0.64.0",
+    "technicalindicators": "^3.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}
