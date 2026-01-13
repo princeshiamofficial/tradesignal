@@ -4,13 +4,36 @@ const config = require('../config');
 let exchange = null;
 
 const initExchange = async () => {
-    const exchangeId = config.exchange.id;
+    let exchangeId = config.exchange.id;
     if (!ccxt[exchangeId]) {
         throw new Error(`Exchange ${exchangeId} not found in ccxt`);
     }
-    exchange = new ccxt[exchangeId]();
-    // Load markets to ensure we have the correct symbols
-    await exchange.loadMarkets();
+
+    let tempExchange = new ccxt[exchangeId]();
+
+    try {
+        // Load markets to ensure we have the correct symbols
+        await tempExchange.loadMarkets();
+        exchange = tempExchange;
+    } catch (error) {
+        // Handle Restricted Location (Binance 451)
+        if (exchangeId === 'binance' && (error.message.includes('451') || error.message.toLowerCase().includes('restricted'))) {
+            console.warn('⚠️ Restricted location detected for Binance. Attempting to switch to Binance US...');
+            try {
+                tempExchange = new ccxt.binanceus();
+                await tempExchange.loadMarkets();
+                exchange = tempExchange;
+                console.log('✅ Successfully switched to Binance US.');
+                return;
+            } catch (usError) {
+                console.error('❌ Failed to switch to Binance US:', usError.message);
+                throw error; // Throw original error if fallback fails
+            }
+        }
+
+        console.error(`Failed to initialize exchange ${exchangeId}:`, error.message);
+        throw error;
+    }
 };
 
 const getOHLCV = async (symbol, timeframe) => {
